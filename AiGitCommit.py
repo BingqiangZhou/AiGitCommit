@@ -8,6 +8,7 @@ from config import API_KEY
 # Set your API key and endpoint
 API_ENDPOINT = "https://api.siliconflow.cn/v1/chat/completions"
 CURL_PROXY = os.getenv("HTTPS_PROXY", "")
+COMMIT_MESSAGE_SUFFIX = "--generate by AiGitCommit"
 
 # Default language for commit message
 LANGUAGES = "en"
@@ -109,7 +110,7 @@ if not commit_message:
 subprocess.run(["git", "add", "."])
 
 # Commit the changes
-subprocess.run(["git", "commit", "-m", commit_message])
+subprocess.run(["git", "commit", "-m", commit_message + COMMIT_MESSAGE_SUFFIX])
 
 print("Commit complete with message:")
 print(commit_message)
