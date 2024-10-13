@@ -41,14 +41,22 @@ if not os.path.isfile(CONFIRMATION_FILE):
 
 # Check the status of the working directory
 print("Checking the status of the working directory...")
-subprocess.run(["git", "status"])
+print(f"Current working directory: {os.getcwd()}")
+git_status = subprocess.run(["git", "status"], capture_output=True, text=True).stdout
+
+# Check for untracked files
+print("Checking for untracked files...")
+untracked_changes = ""
+if "Untracked files:" in git_status:
+    untracked_changes = subprocess.run(["git", "status", "--untracked-files"], capture_output=True, text=True).stdout
 
 # Get the difference between the working directory and the staging area
+print("Getting the difference between the working directory and the staging area...")
 working_diff = subprocess.run(["git", "diff"], capture_output=True, text=True).stdout
 staged_diff = subprocess.run(["git", "diff", "--cached"], capture_output=True, text=True).stdout
 
 # Combine the differences
-diff = working_diff + staged_diff
+diff = working_diff + staged_diff + untracked_changes
 
 # If there are no differences, exit
 if not diff.strip():
