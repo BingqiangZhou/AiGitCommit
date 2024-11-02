@@ -19,31 +19,33 @@ AiGitCommit is a Python script that automates the process of generating Git comm
 
 1. Install the required Python packages:
 
-```bash
-pip install requests
-```
+    ```bash
+    pip install requests
+    ```
 
-2. Set your API key by renaming config_example.py to config.py and updating the API key:
+2. Set your API key by renaming `config_example.py` to `config.py` and updating the API key:
 
-Edit `config.py` and update the API key:
+    Edit `config.py` and update the API key:
 
-```python
-API_KEY = "your_api_key_here"
-```
+    ```python
+    API_KEY = "your_api_key_here"
+    MODEL_NAME = "your_model_name_here"
+    MODEL_CONTEXT_LENGTH = 32 * 1024  # Adjust if needed
+    ```
 
 3. Set the `HTTPS_PROXY` environment variable if needed:
 
-```bash
-export HTTPS_PROXY="your_proxy_url_here"
-```
+    ```bash
+    export HTTPS_PROXY="your_proxy_url_here"
+    ```
 
 ## Usage
 
 Run the script with the desired language for the commit message:
 
-```bash
-python AiGitCommit.py --lang=en
-```
+    ```bash
+    python AiGitCommit.py --lang=en
+    ```
 
 The script will analyze the changes in your working directory and staging area, and generate a commit message in the specified language.
 
