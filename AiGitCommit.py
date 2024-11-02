@@ -3,7 +3,7 @@ import subprocess
 import requests
 import json
 
-from config import API_KEY
+from config import API_KEY, MODEL_NAME, MODEL_CONTEXT_LENGTH
 
 # Set your API key and endpoint
 API_ENDPOINT = "https://api.siliconflow.cn/v1/chat/completions"
@@ -66,20 +66,22 @@ if not diff.strip():
 # Call SiliconFlow API to generate a commit message
 def generate_commit_message(languages, diff):
     url = API_ENDPOINT
-    payload = {
-        "model": "meta-llama/Meta-Llama-3.1-8B-Instruct",
-        # "model": "Vendor-A/Qwen/Qwen2-72B-Instruct",
-        # "model": "THUDM/glm-4-9b-chat",
-        # "model": "Qwen/Qwen2.5-7B-Instruct",
-        # "model": "01-ai/Yi-1.5-9B-Chat-16K",
-        # "model": "google/gemma-2-9b-it",
-        "messages": [
-            {
+    message = {
                 "role": "user",
                 "content": f"Analyze the following code changes, and generate a concise Git commit message, providing it in the following languages: {languages}. Text only:\n\n{diff}\n\n"
                 # "content": f"Based on the following Git diff, analyze the file changes and code modifications, and generate a concise Git commit message. Please provide the message in the following languages: {languages}. Git diff Text:\n\n{diff}\n\n"
             }
-        ],
+    # check if the diff is too long, if so, only send the first part of the diff
+    model_context_len = MODEL_CONTEXT_LENGTH - 64 # 64 is the lenght for "role": "user", "content": "..."
+    if len(message["content"]) > model_context_len:
+        # tip: the diff is too long, only send the first part of the diff, and the rest of the diff will be ignored.
+        # change the console output text's color to red
+        print(f"{RED}Warning: The diff is too long, only sending the first part of the diff, and the rest of the diff will be ignored.{NC}")
+        message["content"] = message["content"][:model_context_len]
+
+    payload = {
+        "model": MODEL_NAME, 
+        "messages": [message],
         "stream": False,
         "max_tokens": 512,
         "temperature": 0.7,
