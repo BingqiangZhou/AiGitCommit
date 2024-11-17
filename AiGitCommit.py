@@ -32,7 +32,7 @@ for arg in sys.argv[1:]:
 if not os.path.isfile(CONFIRMATION_FILE):
     print(f"{RED}Warning: This tool sends your code to an LLM, which may cause information leakage. Type YES to agree and not be prompted again.{NC}")
     user_confirmation = input()
-    if user_confirmation != "YES":
+    if user_confirmation.lower() != "yes":
         print("You did not confirm. Exiting.")
         sys.exit(1)
     else:

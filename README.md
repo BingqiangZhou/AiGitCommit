@@ -43,9 +43,9 @@ AiGitCommit is a Python script that automates the process of generating Git comm
 
 Run the script with the desired language for the commit message:
 
-    ```bash
-    python AiGitCommit.py --lang=en
-    ```
+```bash
+python AiGitCommit.py --lang=en
+```
 
 The script will analyze the changes in your working directory and staging area, and generate a commit message in the specified language.
 
