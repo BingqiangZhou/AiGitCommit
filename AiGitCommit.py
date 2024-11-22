@@ -48,12 +48,12 @@ git_status = subprocess.run(["git", "status"], capture_output=True, text=True).s
 print("Checking for untracked files...")
 untracked_changes = ""
 if "Untracked files:" in git_status:
-    untracked_changes = subprocess.run(["git", "status", "--untracked-files"], capture_output=True, text=True, encoding="utf-8").stdout
-
+    untracked_changes = subprocess.run(["git", "status", "--untracked-files"], capture_output=True, text=True, encoding="utf-8", errors='ignore').stdout
 # Get the difference between the working directory and the staging area
 print("Getting the difference between the working directory and the staging area...")
-working_diff = subprocess.run(["git", "diff"], capture_output=True, text=True, encoding="utf-8").stdout
-staged_diff = subprocess.run(["git", "diff", "--cached"], capture_output=True, text=True, encoding="utf-8").stdout
+
+working_diff = subprocess.run(["git", "diff"], capture_output=True, text=True, encoding="utf-8", errors='ignore').stdout
+staged_diff = subprocess.run(["git", "diff", "--cached"], capture_output=True, text=True, encoding="utf-8", errors='ignore').stdout
 
 # Combine the differences
 diff = working_diff + staged_diff + untracked_changes
